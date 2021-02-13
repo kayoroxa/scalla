@@ -4,7 +4,7 @@ import Head from 'next/head'
 import { ThemeProvider } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import theme from '../theme'
-import { StoreProvider, useStoreRehydrated } from 'easy-peasy'
+import { StoreProvider } from 'easy-peasy'
 import store from 'src/store/index.store'
 
 export default function MyApp(props: any) {
