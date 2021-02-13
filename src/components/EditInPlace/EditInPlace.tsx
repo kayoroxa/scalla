@@ -1,4 +1,3 @@
-import { TextField } from '@material-ui/core'
 import { useRef } from 'react'
 
 import { ContainerEditInPlace } from './styles-edit-in-place'
@@ -8,7 +7,7 @@ interface IProps {
   label?: string | number
   onChangeValue: Function
 }
-const EditInPlace = ({ value, onChangeValue, label }: IProps) => {
+const EditInPlace = ({ value, onChangeValue }: IProps) => {
   const done = () => {
     onChangeValue(
       inputRef?.current?.textContent !== ''

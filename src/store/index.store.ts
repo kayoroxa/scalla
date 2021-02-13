@@ -75,8 +75,6 @@ const store = createStore<StoreModel>(
       })
     }),
     didToday: action((state, payload) => {
-      const habitSelect = state.habits[payload.index]
-
       state.habits[payload.index].historicDays.push({
         data: new Date().toLocaleDateString(),
         feito: payload.didToday,
