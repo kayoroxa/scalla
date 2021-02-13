@@ -1,8 +1,6 @@
-import { Grid, makeStyles, Paper, TextField } from '@material-ui/core'
+import { Grid, makeStyles, Paper } from '@material-ui/core'
 import React from 'react'
 import EditInPlace from '../EditInPlace'
-
-import { ContainerBoxContent } from './styles-box-content'
 
 interface IProps {
   name: string

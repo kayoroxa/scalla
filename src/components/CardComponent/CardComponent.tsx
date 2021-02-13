@@ -7,13 +7,11 @@ import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import { Badge, TextField } from '@material-ui/core'
-import ValueCircle from './sub-components/ValueCircle'
+import { TextField } from '@material-ui/core'
 import calcNextTodo from '../../utils/calcNextToDo'
 import ReactInterval from 'react-interval'
 import { _useStoreActions, _useStoreState } from 'src/store/index.store'
 import { ThumbUp } from '@material-ui/icons'
-import { blue } from '@material-ui/core/colors'
 
 const useStyles = makeStyles({
   root: {
