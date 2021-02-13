@@ -6,7 +6,6 @@ interface IProps {
 
 export const Container = styled.div`
   display: flex;
-  background: red;
   .valor {
     border-radius: 50%;
     width: 36px;
