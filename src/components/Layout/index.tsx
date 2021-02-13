@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core'
 import TopBar from './TopBar'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   root: {
     // backgroundColor: theme.palette.background.dark,
     display: 'flex',
