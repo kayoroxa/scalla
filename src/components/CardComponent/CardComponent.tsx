@@ -27,7 +27,7 @@ interface IProps {
   type: 'repetition' | 'timer'
   initialToDo: number
   index: number
-  Audio?: HTMLAudioElement | undefined
+  Audio?: HTMLAudioElement | undefined | null
 }
 
 export default function CardComponent({
