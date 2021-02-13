@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core'
-import NavBar from './NavBar'
 import TopBar from './TopBar'
 
 const useStyles = makeStyles(theme => ({

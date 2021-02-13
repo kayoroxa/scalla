@@ -3,12 +3,8 @@ import {
   action,
   createStore,
   createTypedHooks,
-  debug,
   persist,
-  Thunk,
-  thunk,
 } from 'easy-peasy'
-import calcNextTodo from 'src/utils/calcNextToDo'
 
 interface IChangeHabitProps {
   index: number
