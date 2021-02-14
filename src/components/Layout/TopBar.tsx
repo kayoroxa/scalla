@@ -2,6 +2,8 @@ import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Box from '@material-ui/core/Box'
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import Hidden from '@material-ui/core/Hidden'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -9,7 +11,9 @@ import Apps from '@material-ui/icons/Apps'
 import MoreVert from '@material-ui/icons/MoreVert'
 import VideoCall from '@material-ui/icons/VideoCall'
 import AccountCircle from '@material-ui/icons/AccountCircle'
-import { Avatar, Button } from '@material-ui/core'
+// import { signIn, signOut, useSession } from 'next-auth/client'
+
+// import { THEMES } from 'src/utils/constants'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -45,7 +49,6 @@ function TopBar() {
   //   const [session] = useSession()
   const session = true
   //   const { settings, saveSettings } = useSettings()
-
   return (
     <AppBar className={classes.root} color="default">
       <Toolbar className={classes.toolbar}>
