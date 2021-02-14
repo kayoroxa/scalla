@@ -2,24 +2,17 @@ import { makeStyles } from '@material-ui/core/styles'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Box from '@material-ui/core/Box'
-import Paper from '@material-ui/core/Paper'
-import InputBase from '@material-ui/core/InputBase'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import Hidden from '@material-ui/core/Hidden'
 import MenuIcon from '@material-ui/icons/Menu'
-import SearchIcon from '@material-ui/icons/Search'
 import Apps from '@material-ui/icons/Apps'
 import MoreVert from '@material-ui/icons/MoreVert'
 import VideoCall from '@material-ui/icons/VideoCall'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 // import { signIn, signOut, useSession } from 'next-auth/client'
-import Brightness7Icon from '@material-ui/icons/Brightness7'
-import Brightness4Icon from '@material-ui/icons/Brightness4'
-import useSettings from 'src/hooks/useSettings'
-import { MenuItem, TextField } from '@material-ui/core'
-import { useState } from 'react'
+
 // import { THEMES } from 'src/utils/constants'
 
 const useStyles = makeStyles(theme => ({
@@ -56,22 +49,6 @@ function TopBar() {
   //   const [session] = useSession()
   const session = true
   //   const { settings, saveSettings } = useSettings()
-  const currencies = [
-    {
-      value: 'timer',
-      label: 'timer',
-    },
-    {
-      value: 'repetition',
-      label: 'repetition',
-    },
-  ]
-  const [currency, setCurrency] = useState('timer')
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCurrency(event.target.value)
-  }
-
   return (
     <AppBar className={classes.root} color="default">
       <Toolbar className={classes.toolbar}>
