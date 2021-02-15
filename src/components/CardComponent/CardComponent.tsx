@@ -12,6 +12,7 @@ import calcNextTodo from '../../utils/calcNextToDo'
 import ReactInterval from 'react-interval'
 import { _useStoreActions, _useStoreState } from 'src/store/index.store'
 import { ThumbUp } from '@material-ui/icons'
+import { useRouter } from 'next/router'
 
 const useStyles = makeStyles({
   root: {
@@ -81,13 +82,14 @@ export default function CardComponent({
     }
   }, [faltantes])
 
+  const router = useRouter()
   useEffect(() => {
     // !hojeFeito && setFaltantes(nextToDo)
   }, [nextToDo])
 
   return (
     <Card className={classes.root}>
-      <CardActionArea>
+      <CardActionArea onClick={() => router.push(`habit/${index}`)}>
         <div style={{ position: 'absolute' }}>
           {!hojeFeito && type === 'timer' && faltantes}
         </div>

@@ -22,6 +22,7 @@ interface IHabits {
   imageUrl: string
   historicDays: { data: string; feito: number }[]
   initialToDo: number
+  nextTodo?: number
 }
 
 interface StoreModel {
@@ -29,6 +30,7 @@ interface StoreModel {
   createHabit: Action<StoreModel, any>
   didToday: Action<StoreModel, { index: number; didToday: number }>
   changeHabit: Action<StoreModel, IChangeHabitProps>
+  deleteHabit: Action<StoreModel, { index: number }>
 }
 
 const imagesUrls = {
@@ -45,34 +47,32 @@ const store = createStore<StoreModel>(
         type: 'timer',
         title: 'Meditação',
         imageUrl: imagesUrls.meditation,
-        // last10Days: [
-        //   { data: '05/04/2019', feito: 4 },
-        //   { data: '05/04/2019', feito: 10 },
-        //   { data: '06/04/2019', feito: 20 },
-        // ],
         historicDays: [],
         teste: [],
-        multiplicador: 0.1,
-        initialToDo: 3,
+        multiplicador: 0.01,
+        initialToDo: 60,
       },
       {
         type: 'repetition',
         title: 'flexão',
         imageUrl: imagesUrls.flexão,
         historicDays: [],
-        multiplicador: 0.1,
-        initialToDo: 8,
+        multiplicador: 0.01,
+        initialToDo: 1,
       },
     ],
-    createHabit: action((state, payload) => {
+    createHabit: action((state, payload: IHabits) => {
       state.habits.push({
         title: payload.title,
         type: payload.type,
         multiplicador: payload.multiplicador,
         imageUrl: payload.imageUrl,
-        historicDays: payload.last10Days,
-        initialToDo: payload.initial,
+        historicDays: payload.historicDays,
+        initialToDo: payload.initialToDo,
       })
+    }),
+    deleteHabit: action((state, payload) => {
+      state.habits.splice(payload.index, 1)
     }),
     didToday: action((state, payload) => {
       state.habits[payload.index].historicDays.push({
