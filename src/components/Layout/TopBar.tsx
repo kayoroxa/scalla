@@ -12,7 +12,6 @@ import MoreVert from '@material-ui/icons/MoreVert'
 import VideoCall from '@material-ui/icons/VideoCall'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import { _useStoreActions } from 'src/store/index.store'
-import { Router } from '@material-ui/icons'
 import { useRouter } from 'next/router'
 // import { signIn, signOut, useSession } from 'next-auth/client'
 
