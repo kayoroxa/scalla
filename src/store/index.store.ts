@@ -49,7 +49,7 @@ const store = createStore<StoreModel>(
         imageUrl: imagesUrls.meditation,
         historicDays: [],
         teste: [],
-        multiplicador: 0.1,
+        multiplicador: 0.01,
         initialToDo: 60,
       },
       {
@@ -57,8 +57,8 @@ const store = createStore<StoreModel>(
         title: 'flexão',
         imageUrl: imagesUrls.flexão,
         historicDays: [],
-        multiplicador: 0.1,
-        initialToDo: 8,
+        multiplicador: 0.01,
+        initialToDo: 1,
       },
     ],
     createHabit: action((state, payload: IHabits) => {
