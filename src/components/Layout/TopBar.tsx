@@ -57,12 +57,12 @@ function TopBar() {
     <AppBar className={classes.root} color="default">
       <Toolbar className={classes.toolbar}>
         <Box display="flex" alignItems="center">
-          <IconButton>
-            <HomeIcon
-              onClick={() => {
-                router.push('/')
-              }}
-            />
+          <IconButton
+            onClick={() => {
+              router.push('/')
+            }}
+          >
+            <HomeIcon />
           </IconButton>
 
           {/* <img
