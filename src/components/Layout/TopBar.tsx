@@ -101,8 +101,8 @@ function TopBar() {
           </Box>
         </Hidden>
         <Box display="flex">
-          <IconButton>
-            {/* {settings.theme === THEMES.DARK ? (
+          {/* <IconButton>
+            {settings.theme === THEMES.DARK ? (
               <Brightness7Icon
                 onClick={() => saveSettings({ theme: THEMES.LIGHT })}
               />
@@ -110,8 +110,8 @@ function TopBar() {
               <Brightness4Icon
                 onClick={() => saveSettings({ theme: THEMES.DARK })}
               />
-            )} */}
-          </IconButton>
+            )}
+          </IconButton> */}
           <IconButton
             onClick={() =>
               createHabit({
