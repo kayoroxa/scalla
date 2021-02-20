@@ -25,6 +25,7 @@ const HabitPage = () => {
   const myId = Number(router.query.id)
 
   const prevision = useMemo(() => {
+    if (habits[myId] === undefined) return []
     const arrayPrevision: {
       id: number
       segundos: number
@@ -46,7 +47,7 @@ const HabitPage = () => {
       })
     }
     return arrayPrevision
-  }, [])
+  }, [myId])
 
   const handleDeleteButton = () => {
     deleteHabit({ index: myId })
