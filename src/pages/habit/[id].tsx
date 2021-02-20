@@ -16,6 +16,12 @@ const useStyles = makeStyles({
   },
 })
 
+interface IPrevision {
+  id: number
+  segundos: number
+  minutos: number
+}
+
 const HabitPage = () => {
   const { habits } = _useStoreState(store => store)
   const { changeHabit, deleteHabit } = _useStoreActions(action => action)
@@ -26,11 +32,7 @@ const HabitPage = () => {
 
   const prevision = useMemo(() => {
     if (habits[myId] === undefined) return []
-    const arrayPrevision: {
-      id: number
-      segundos: number
-      minutos: number
-    }[] = [
+    const arrayPrevision: IPrevision[] = [
       {
         id: 0,
         segundos: Math.round(habits[myId].initialToDo),
@@ -42,8 +44,8 @@ const HabitPage = () => {
       const calculado = calcNextTodo(ultimo, habits[myId].multiplicador)
       arrayPrevision.push({
         id: c + 1,
-        segundos: Math.round(calculado),
-        minutos: Math.round(calculado / 60),
+        segundos: calculado,
+        minutos: calculado / 60,
       })
     }
     return arrayPrevision
@@ -59,6 +61,7 @@ const HabitPage = () => {
       {isRehydrated && (
         <Layout>
           <ReactJson
+            theme="google"
             src={habits[myId]}
             onEdit={edit => {
               changeHabit({ index: myId, ...edit.updated_src })
