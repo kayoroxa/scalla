@@ -61,6 +61,7 @@ const HabitPage = () => {
       {isRehydrated && (
         <Layout>
           <ReactJson
+            theme="google"
             src={habits[myId]}
             onEdit={edit => {
               changeHabit({ index: myId, ...edit.updated_src })
