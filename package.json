@@ -21,7 +21,8 @@
     "react-icons": "^4.1.0",
     "react-interval": "^2.1.1",
     "react-json-view": "^1.21.1",
-    "styled-components": "^5.0.0"
+    "styled-components": "^5.0.0",
+    "swr": "^0.4.2"
   },
   "devDependencies": {
     "@testing-library/dom": "^7.29.4",
