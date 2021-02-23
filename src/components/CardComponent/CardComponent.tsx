@@ -65,7 +65,9 @@ export default function CardComponent({
   const [hojeFeito, setHojeFeito] = useState(false)
 
   useEffect(() => {
-    if (historicDays.slice(-1)[0]?.data === new Date().toLocaleDateString()) {
+    if (
+      historicDays.slice(-1)[0]?.data === new Date().toLocaleDateString('pt-br')
+    ) {
       setIsInterval(false)
       setHojeFeito(true)
     }
