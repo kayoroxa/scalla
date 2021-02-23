@@ -131,6 +131,7 @@ function TopBar() {
               <Avatar
                 // onClick={() => signOut()}
                 alt="User"
+                src="https://avatars.githubusercontent.com/u/54248474?s=460&u=987f95e3a575d45e41b464202e2a77f4f5053abe&v=4"
                 // className={classes.avatar}
                 // src={session?.user?.image}
               />
