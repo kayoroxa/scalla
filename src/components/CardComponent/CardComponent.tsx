@@ -106,7 +106,10 @@ export default function CardComponent({
           alt={title}
           height="140"
           width="20"
-          image={imageUrl}
+          image={
+            imageUrl ||
+            'https://baladasegura.rs.gov.br/themes/modelo-institucional/images/outros/GD_imgSemImagem.png'
+          }
           title={title}
         />
         <CardContent>
