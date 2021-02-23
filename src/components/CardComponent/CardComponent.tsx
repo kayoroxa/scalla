@@ -13,6 +13,7 @@ import ReactInterval from 'react-interval'
 import { _useStoreActions, _useStoreState } from 'src/store/index.store'
 import { ThumbUp } from '@material-ui/icons'
 import { useRouter } from 'next/router'
+import DB from 'src/utils/fetchData'
 
 const useStyles = makeStyles({
   root: {
@@ -43,8 +44,7 @@ export default function CardComponent({
 }: IProps) {
   const classes = useStyles()
   // const { habits } = _useStoreState(state => state)
-  const { didToday, changeHabit } = _useStoreActions(actions => actions)
-
+  const [cacheDid, setCacheDid] = useState(false)
   // const [doToday, setDoToday] = useState(2)
 
   const nextToDo = useMemo(() => {
@@ -53,8 +53,9 @@ export default function CardComponent({
       filtrado.length > 0
         ? calcNextTodo(historicDays.slice(-1)[0].feito, multiplicador)
         : initialToDo
+    if (cacheDid) return calcNextTodo(nextToDo, multiplicador)
     return nextToDo
-  }, [historicDays])
+  }, [historicDays, cacheDid])
 
   // useEffect(() => {
   //   console.log({ nextToDo })
@@ -63,6 +64,14 @@ export default function CardComponent({
   const [faltantes, setFaltantes] = useState(nextToDo)
   const [isInterval, setIsInterval] = useState(false)
   const [hojeFeito, setHojeFeito] = useState(false)
+
+  const handleDid = async () => {
+    // didToday({ index, didToday: nextToDo })
+    // const url = process.env.NEXT_PUBLIC_URL
+    DB.post('done', { index, done: nextToDo })
+    setCacheDid(true)
+    setHojeFeito(true)
+  }
 
   useEffect(() => {
     if (
@@ -79,7 +88,7 @@ export default function CardComponent({
 
   useEffect(() => {
     if (faltantes <= 0) {
-      didToday({ index, didToday: nextToDo })
+      handleDid()
       Audio?.play()
     }
   }, [faltantes])
@@ -91,10 +100,7 @@ export default function CardComponent({
 
   return (
     <Card className={classes.root}>
-      <CardActionArea onClick={() => router.push(`habit/${index}`)}>
-        <div style={{ position: 'absolute' }}>
-          {!hojeFeito && type === 'timer' && faltantes}
-        </div>
+      <CardActionArea onClick={() => router.push(`habit/config/${index}`)}>
         <ReactInterval
           timeout={200}
           enabled={isInterval}
@@ -115,6 +121,9 @@ export default function CardComponent({
           title={title}
         />
         <CardContent>
+          <div style={{ position: 'absolute', opacity: 0.3 }}>
+            {!hojeFeito && type === 'timer' && faltantes}
+          </div>
           <Typography align="center" variant="h5" component="h2">
             {title}
           </Typography>
@@ -146,11 +155,7 @@ export default function CardComponent({
           </>
         )}
         {!hojeFeito && type === 'repetition' && (
-          <Button
-            onClick={() => didToday({ index, didToday: nextToDo })}
-            size="small"
-            color="primary"
-          >
+          <Button onClick={() => handleDid()} size="small" color="primary">
             done
           </Button>
         )}
@@ -162,9 +167,6 @@ export default function CardComponent({
             shrink: true,
           }}
           value={nextToDo}
-          onChange={(event: any) =>
-            changeHabit({ index, nextToDo: Number(event.target.value) })
-          }
           variant="outlined"
         />
         {hojeFeito && <ThumbUp color="primary" />}
