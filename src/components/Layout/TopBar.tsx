@@ -7,9 +7,8 @@ import Button from '@material-ui/core/Button'
 import IconButton from '@material-ui/core/IconButton'
 import Hidden from '@material-ui/core/Hidden'
 import HomeIcon from '@material-ui/icons/Home'
-import Apps from '@material-ui/icons/Apps'
 import MoreVert from '@material-ui/icons/MoreVert'
-import VideoCall from '@material-ui/icons/VideoCall'
+import AddCircleIcon from '@material-ui/icons/AddCircle'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import { _useStoreActions } from 'src/store/index.store'
 import { useRouter } from 'next/router'
@@ -51,7 +50,6 @@ function TopBar() {
   //   const [session] = useSession()
   const session = true
   //   const { settings, saveSettings } = useSettings()
-  const { createHabit } = _useStoreActions(action => action)
   const router = useRouter()
   return (
     <AppBar className={classes.root} color="default">
@@ -59,7 +57,7 @@ function TopBar() {
         <Box display="flex" alignItems="center">
           <IconButton
             onClick={() => {
-              router.push('/')
+              router.push('/home')
             }}
           >
             <HomeIcon />
@@ -112,23 +110,8 @@ function TopBar() {
               />
             )}
           </IconButton> */}
-          <IconButton
-            onClick={() =>
-              createHabit({
-                title: 'SEM NOME',
-                type: 'timer',
-                multiplicador: 0.01,
-                imageUrl:
-                  'https://baladasegura.rs.gov.br/themes/modelo-institucional/images/outros/GD_imgSemImagem.png',
-                historicDays: [],
-                initialToDo: 1,
-              })
-            }
-          >
-            <VideoCall />
-          </IconButton>
-          <IconButton>
-            <Apps />
+          <IconButton onClick={() => router.push('/habit/create')}>
+            <AddCircleIcon />
           </IconButton>
           <IconButton>
             <MoreVert />
@@ -148,6 +131,7 @@ function TopBar() {
               <Avatar
                 // onClick={() => signOut()}
                 alt="User"
+                src="https://avatars.githubusercontent.com/u/54248474?s=460&u=987f95e3a575d45e41b464202e2a77f4f5053abe&v=4"
                 // className={classes.avatar}
                 // src={session?.user?.image}
               />

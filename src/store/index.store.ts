@@ -1,3 +1,4 @@
+import { IHabits } from './../utils/@types/habits.interface'
 import {
   Action,
   action,
@@ -13,16 +14,6 @@ interface IChangeHabitProps {
   initial?: number
   lastDid?: { data: string; feito: number }[]
   nextToDo?: number
-}
-
-interface IHabits {
-  title: string
-  type: 'timer' | 'repetition'
-  multiplicador: number
-  imageUrl: string
-  historicDays: { data: string; feito: number }[]
-  initialToDo: number
-  nextTodo?: number
 }
 
 interface StoreModel {
