@@ -1,7 +1,7 @@
 // import { makeStyles } from '@material-ui/core'
 import { _useStoreActions, _useStoreState } from 'src/store/index.store'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import {
   Avatar,
   Button,

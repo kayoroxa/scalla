@@ -4,7 +4,7 @@ import { useRef } from 'react'
 import Layout from 'src/components/Layout'
 import { _useStoreState } from 'src/store/index.store'
 import { IHabits } from 'src/utils/@types/habits.interface'
-import { useHabit } from 'src/utils/useSWR'
+import { useHabit, useDataUser } from 'src/utils/useSWR'
 import CardComponent from '../components/CardComponent/CardComponent'
 
 const useStyles = makeStyles({
@@ -25,6 +25,7 @@ function Home() {
   const isRehydrated = useStoreRehydrated()
   const refAudio = useRef<HTMLAudioElement>(null)
 
+  const useImage = useDataUser().data?.userImage
   const { data } = useHabit()
 
   const habits: IHabits[] = data
@@ -33,7 +34,7 @@ function Home() {
     <div className={classes.root}>
       <audio ref={refAudio} src="alarm-curto.mp3"></audio>
       {isRehydrated && (
-        <Layout>
+        <Layout useImage={useImage}>
           <Box p={2}>
             <Grid container spacing={4}>
               {habits &&
@@ -62,11 +63,13 @@ function Home() {
 export default Home
 
 // export async function getServerSideProps() {
-//   const habits = await DB.get()
+//   // const habits = await DB.get()
+
+//   const { data } = useDataUser()
 
 //   return {
 //     props: {
-//       habits,
+//       useImage: data.useImage,
 //     },
 //   }
 // }

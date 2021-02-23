@@ -12,3 +12,11 @@ export function useHabit() {
     refreshInterval: 50000,
   })
 }
+export function useDataUser() {
+  // const email = localStorage.getItem('email')
+  const { email } = _useStoreState(state => state)
+  const fetcher = (url: string) => axios.get(url).then(res => res.data)
+  return useSWR(`/api/user-data/${email}`, fetcher, {
+    refreshInterval: 50000,
+  })
+}

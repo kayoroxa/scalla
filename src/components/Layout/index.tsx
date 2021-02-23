@@ -30,11 +30,16 @@ const useStyles = makeStyles(() => ({
   },
 }))
 
-export default function Layout({ children }: any) {
+interface IProps {
+  children: any
+  useImage?: string
+}
+
+export default function Layout({ children, useImage }: IProps) {
   const classes = useStyles()
   return (
     <div className={classes.root}>
-      <TopBar />
+      <TopBar useImage={useImage} />
       {/* <NavBar /> */}
       <div className={classes.wrapper}>
         <div className={classes.contentContainer}>

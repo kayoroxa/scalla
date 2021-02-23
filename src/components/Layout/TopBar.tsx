@@ -48,7 +48,7 @@ const useStyles = makeStyles(theme => ({
   },
 }))
 
-function TopBar({ useImage }: { useImage: string }) {
+function TopBar({ useImage }: { useImage?: string }) {
   const classes = useStyles()
   //   const [session] = useSession()
   const session = true
