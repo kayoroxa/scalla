@@ -20,6 +20,7 @@ const useStyles = makeStyles({
 
 // function Home({ habits }: IProps) {
 function Home() {
+  // if (typeof window === 'undefined') return <div>oi</div>
   const classes = useStyles()
   const isRehydrated = useStoreRehydrated()
   const refAudio = useRef<HTMLAudioElement>(null)

@@ -42,6 +42,8 @@ export default function CardComponent({
   index,
   Audio,
 }: IProps) {
+  const { email } = _useStoreState(state => state)
+  if (!email) return <></>
   const classes = useStyles()
   // const { habits } = _useStoreState(state => state)
   const [cacheDid, setCacheDid] = useState(false)
@@ -68,7 +70,7 @@ export default function CardComponent({
   const handleDid = async () => {
     // didToday({ index, didToday: nextToDo })
     // const url = process.env.NEXT_PUBLIC_URL
-    DB.post('done', { index, done: nextToDo })
+    DB.post('done', { index, done: nextToDo }, email)
     setCacheDid(true)
     setHojeFeito(true)
   }

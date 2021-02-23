@@ -17,6 +17,8 @@ interface IChangeHabitProps {
 }
 
 interface StoreModel {
+  email: string | null
+  changeEmail: Action<StoreModel, any>
   habits: IHabits[]
   createHabit: Action<StoreModel, any>
   didToday: Action<StoreModel, { index: number; didToday: number }>
@@ -33,6 +35,10 @@ const imagesUrls = {
 
 const store = createStore<StoreModel>(
   persist({
+    email: null,
+    changeEmail: action((state, payload: string) => {
+      state.email = payload
+    }),
     habits: [
       {
         type: 'timer',

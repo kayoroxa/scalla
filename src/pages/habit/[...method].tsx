@@ -15,6 +15,7 @@ import { useRouter } from 'next/router'
 import Layout from 'src/components/Layout'
 import { IHabits } from 'src/utils/@types/habits.interface'
 import { useHabit } from 'src/utils/useSWR'
+import { _useStoreState } from 'src/store/index.store'
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -44,6 +45,8 @@ interface IProps {
 }
 
 export default function SignIn({ method, habitIndex }: IProps) {
+  const { email } = _useStoreState(state => state)
+  if (!email) return <></>
   const router = useRouter()
   const { data } = useHabit()
 
@@ -69,26 +72,34 @@ export default function SignIn({ method, habitIndex }: IProps) {
   const funcHandleSubmit = async (data: IHabits) => {
     const { title, imageUrl, initialToDo, multiplicador, type } = data
     if (isCreate) {
-      await DB.post('create', {
-        title,
-        type,
-        multiplicador: Number(multiplicador),
-        imageUrl,
-        historicDays: initialData.historicDays,
-        initialToDo: Number(initialToDo),
-      })
-    } else if (habitIndex !== undefined) {
-      await DB.post('set', {
-        index: habitIndex,
-        newData: {
+      await DB.post(
+        'create',
+        {
           title,
           type,
           multiplicador: Number(multiplicador),
           imageUrl,
-          historicDays: initialData?.historicDays,
+          historicDays: initialData.historicDays,
           initialToDo: Number(initialToDo),
         },
-      })
+        email
+      )
+    } else if (habitIndex !== undefined) {
+      await DB.post(
+        'set',
+        {
+          index: habitIndex,
+          newData: {
+            title,
+            type,
+            multiplicador: Number(multiplicador),
+            imageUrl,
+            historicDays: initialData?.historicDays,
+            initialToDo: Number(initialToDo),
+          },
+        },
+        email
+      )
     } else throw new Error('HabitIndex Undefined')
 
     router.push('/home')
