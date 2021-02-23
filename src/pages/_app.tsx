@@ -6,6 +6,15 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import theme from '../theme'
 import { StoreProvider } from 'easy-peasy'
 import store from 'src/store/index.store'
+import NProgress from 'nprogress'
+import Router from 'next/router'
+
+Router.events.on('routeChangeStart', url => {
+  console.log(`Loading: ${url}`)
+  NProgress.start()
+})
+Router.events.on('routeChangeComplete', () => NProgress.done())
+Router.events.on('routeChangeError', () => NProgress.done())
 
 export default function MyApp(props: any) {
   const { Component, pageProps } = props
@@ -18,20 +27,18 @@ export default function MyApp(props: any) {
     }
   }, [])
 
-  // const isRehydrated = useStoreRehydrated()
-
   return (
     <React.Fragment>
       <StoreProvider store={store}>
         <Head>
           <title>Scalla</title>
+          <link rel="stylesheet" type="text/css" href="/nprogress.css" />
           <meta
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width"
           />
         </Head>
         <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
           <CssBaseline />
           <Component {...pageProps} />
         </ThemeProvider>
