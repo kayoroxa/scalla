@@ -4,7 +4,6 @@ import { useRef } from 'react'
 import Layout from 'src/components/Layout'
 import { _useStoreState } from 'src/store/index.store'
 import { IHabits } from 'src/utils/@types/habits.interface'
-import DB from 'src/utils/fetchData'
 import { useHabit } from 'src/utils/useSWR'
 import CardComponent from '../components/CardComponent/CardComponent'
 
@@ -25,7 +24,7 @@ function Home() {
   const isRehydrated = useStoreRehydrated()
   const refAudio = useRef<HTMLAudioElement>(null)
 
-  const { data, error } = useHabit()
+  const { data } = useHabit()
 
   const habits: IHabits[] = data
 
