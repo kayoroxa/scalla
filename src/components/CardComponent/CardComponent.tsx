@@ -7,13 +7,14 @@ import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import { TextField } from '@material-ui/core'
 import calcNextTodo from '../../utils/calcNextToDo'
 import ReactInterval from 'react-interval'
 import { _useStoreActions, _useStoreState } from 'src/store/index.store'
 import { ThumbUp } from '@material-ui/icons'
 import { useRouter } from 'next/router'
 import DB from 'src/utils/fetchData'
+import { TextField } from '@material-ui/core'
+import TimeField from './sub-components/TimeField'
 
 const useStyles = makeStyles({
   root: {
@@ -161,16 +162,21 @@ export default function CardComponent({
             done
           </Button>
         )}
-        <TextField
-          id="outlined-number"
-          label="Fazer"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          value={nextToDo}
-          variant="outlined"
-        />
+        {type === 'repetition' ? (
+          <TextField
+            // id="outlined-number"
+            label="Fazer"
+            type="number"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            value={Math.round(nextToDo)}
+            variant="outlined"
+          />
+        ) : (
+          <TimeField value={nextToDo} />
+        )}
+
         {hojeFeito && <ThumbUp color="primary" />}
       </CardActions>
     </Card>
