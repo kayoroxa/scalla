@@ -1605,6 +1605,10 @@ babel-preset-jest@^26.6.2:
     babel-plugin-jest-hoist "^26.6.2"
     babel-preset-current-node-syntax "^1.0.0"
 
+background-timer@mustafah/background-timer:
+  version "1.0.2"
+  resolved "https://codeload.github.com/mustafah/background-timer/tar.gz/a1c3bc5871c56d0235cb4f42820aea416fc4211a"
+
 balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
