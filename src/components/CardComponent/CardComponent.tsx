@@ -139,26 +139,23 @@ export default function CardComponent({
         {!hojeFeito && type === 'timer' && (
           <>
             <Button
-              onClick={() => setIsInterval(true)}
+              onClick={() =>
+                isInterval ? setIsInterval(false) : setIsInterval(true)
+              }
               size="small"
-              color="primary"
-              disabled={isInterval ? true : false}
+              color={isInterval ? 'default' : 'primary'}
             >
-              Iniciar
-            </Button>
-
-            <Button
-              onClick={() => setIsInterval(false)}
-              size="small"
-              color="primary"
-              disabled={!hojeFeito && isInterval ? false : true}
-            >
-              Pausar
+              {isInterval ? 'Pausar' : 'Iniciar'}
             </Button>
           </>
         )}
-        {!hojeFeito && type === 'repetition' && (
-          <Button onClick={() => handleDid()} size="small" color="primary">
+        {!hojeFeito && (
+          <Button
+            variant="contained"
+            onClick={() => handleDid()}
+            size="small"
+            color="primary"
+          >
             done
           </Button>
         )}
