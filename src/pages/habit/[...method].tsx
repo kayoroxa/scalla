@@ -188,7 +188,11 @@ export default function SignIn({ method, habitIndex }: IProps) {
                 required
                 type="number"
                 name="initialToDo"
-                label="initialToDo"
+                label={
+                  type === 'timer'
+                    ? 'tempo inicial (s)'
+                    : 'qnt repetição inicial'
+                }
                 id="initialToDo"
                 defaultValue={initialData.initialToDo}
               />
