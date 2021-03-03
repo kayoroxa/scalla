@@ -16,6 +16,7 @@ import Layout from 'src/components/Layout'
 import { IHabits } from 'src/utils/@types/habits.interface'
 import { useHabit } from 'src/utils/useSWR'
 import { _useStoreState } from 'src/store/index.store'
+import TableJC from '../../components/TableJC'
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -67,7 +68,15 @@ export default function SignIn({ method, habitIndex }: IProps) {
   else initialData = habits[habitIndex]
 
   const classes = useStyles()
-  const { register, handleSubmit, control } = useForm<IHabits>()
+  const { register, handleSubmit, control, watch } = useForm<IHabits>()
+
+  const { multiplicador, initialToDo, type } = watch([
+    'multiplicador',
+    'initialToDo',
+    'type',
+  ])
+
+  // console.log(watchMultiplicador)
 
   const funcHandleSubmit = async (data: IHabits) => {
     const { title, imageUrl, initialToDo, multiplicador, type } = data
@@ -92,7 +101,7 @@ export default function SignIn({ method, habitIndex }: IProps) {
           newData: {
             title,
             type,
-            multiplicador: Number(multiplicador),
+            multiplicador: Number(multiplicador) / 100,
             imageUrl,
             historicDays: initialData?.historicDays,
             initialToDo: Number(initialToDo),
@@ -170,7 +179,7 @@ export default function SignIn({ method, habitIndex }: IProps) {
                 name="multiplicador"
                 label="multiplicador"
                 id="multiplicador"
-                defaultValue={initialData.multiplicador}
+                defaultValue={initialData.multiplicador * 100}
               />
               <TextField
                 variant="outlined"
@@ -194,6 +203,11 @@ export default function SignIn({ method, habitIndex }: IProps) {
                 Okay
               </Button>
             </form>
+            <TableJC
+              initial={initialToDo}
+              multiplicador={multiplicador}
+              type={type}
+            />
           </div>
         </Container>
       </Layout>
