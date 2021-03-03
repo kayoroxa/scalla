@@ -177,7 +177,7 @@ export default function SignIn({ method, habitIndex }: IProps) {
                 required
                 type="number"
                 name="multiplicador"
-                label="multiplicador"
+                label="multiplicador (%)"
                 id="multiplicador"
                 defaultValue={initialData.multiplicador * 100}
               />
