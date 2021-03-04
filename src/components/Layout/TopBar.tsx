@@ -43,14 +43,22 @@ const useStyles = makeStyles(theme => ({
   input: {
     flex: 1,
   },
+  avatar: {
+    cursor: 'pointer',
+  },
 }))
 
-function TopBar() {
+function TopBar({ useImage }: { useImage?: string }) {
   const classes = useStyles()
   //   const [session] = useSession()
   const session = true
   //   const { settings, saveSettings } = useSettings()
   const router = useRouter()
+  const { changeEmail } = _useStoreActions(actions => actions)
+  const signOut = () => {
+    changeEmail(null)
+    router.push('/')
+  }
   return (
     <AppBar className={classes.root} color="default">
       <Toolbar className={classes.toolbar}>
@@ -129,10 +137,10 @@ function TopBar() {
           ) : (
             <Box display="flex" alignItems="center">
               <Avatar
-                // onClick={() => signOut()}
+                onClick={() => signOut()}
                 alt="User"
-                src="https://avatars.githubusercontent.com/u/54248474?s=460&u=987f95e3a575d45e41b464202e2a77f4f5053abe&v=4"
-                // className={classes.avatar}
+                src={useImage}
+                className={classes.avatar}
                 // src={session?.user?.image}
               />
             </Box>

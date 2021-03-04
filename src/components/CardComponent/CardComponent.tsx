@@ -1,5 +1,4 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardActions from '@material-ui/core/CardActions'
@@ -7,19 +6,15 @@ import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
-import { TextField } from '@material-ui/core'
 import calcNextTodo from '../../utils/calcNextToDo'
-import ReactInterval from 'react-interval'
 import { _useStoreActions, _useStoreState } from 'src/store/index.store'
 import { ThumbUp } from '@material-ui/icons'
 import { useRouter } from 'next/router'
 import DB from 'src/utils/fetchData'
-
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 345,
-  },
-})
+import { TextField } from '@material-ui/core'
+import TimeField from './sub-components/TimeField'
+import useStyles from './CardComponent.style'
+import TimerComponent from './sub-components/TimerComponent'
 
 interface IProps {
   imageUrl?: string
@@ -42,6 +37,8 @@ export default function CardComponent({
   index,
   Audio,
 }: IProps) {
+  const { email } = _useStoreState(state => state)
+  if (!email) return <></>
   const classes = useStyles()
   // const { habits } = _useStoreState(state => state)
   const [cacheDid, setCacheDid] = useState(false)
@@ -57,20 +54,16 @@ export default function CardComponent({
     return nextToDo
   }, [historicDays, cacheDid])
 
-  // useEffect(() => {
-  //   console.log({ nextToDo })
-  // }, [nextToDo])
-
-  const [faltantes, setFaltantes] = useState(nextToDo)
   const [isInterval, setIsInterval] = useState(false)
   const [hojeFeito, setHojeFeito] = useState(false)
 
   const handleDid = async () => {
     // didToday({ index, didToday: nextToDo })
     // const url = process.env.NEXT_PUBLIC_URL
-    DB.post('done', { index, done: nextToDo })
+    DB.post('done', { index, done: nextToDo }, email)
     setCacheDid(true)
     setHojeFeito(true)
+    setIsInterval(false)
   }
 
   useEffect(() => {
@@ -80,18 +73,7 @@ export default function CardComponent({
       setIsInterval(false)
       setHojeFeito(true)
     }
-    // else {
-    // setFaltantes(nextToDo)
-    // setHojeFeito(false)
-    // }
   }, [historicDays])
-
-  useEffect(() => {
-    if (faltantes <= 0) {
-      handleDid()
-      Audio?.play()
-    }
-  }, [faltantes])
 
   const router = useRouter()
   useEffect(() => {
@@ -101,14 +83,13 @@ export default function CardComponent({
   return (
     <Card className={classes.root}>
       <CardActionArea onClick={() => router.push(`habit/config/${index}`)}>
-        <ReactInterval
-          timeout={200}
-          enabled={isInterval}
-          callback={() => {
-            // diminuirNextToDo({ index, decrease: 200 / 1000 })
-            !hojeFeito && setFaltantes(prev => Math.max(0, prev - 200 / 1000))
-          }}
+        <TimerComponent
+          Audio={Audio}
+          isPlaying={isInterval}
+          duration={nextToDo}
+          onEnded={() => handleDid()}
         />
+
         <CardMedia
           component="img"
           alt={title}
@@ -120,14 +101,11 @@ export default function CardComponent({
           }
           title={title}
         />
+
         <CardContent>
-          <div style={{ position: 'absolute', opacity: 0.3 }}>
-            {!hojeFeito && type === 'timer' && faltantes}
-          </div>
           <Typography align="center" variant="h5" component="h2">
             {title}
           </Typography>
-
           {/* <ValueCircle value={[]} /> */}
         </CardContent>
       </CardActionArea>
@@ -136,39 +114,41 @@ export default function CardComponent({
         {!hojeFeito && type === 'timer' && (
           <>
             <Button
-              onClick={() => setIsInterval(true)}
+              onClick={() =>
+                isInterval ? setIsInterval(false) : setIsInterval(true)
+              }
               size="small"
-              color="primary"
-              disabled={isInterval ? true : false}
+              color={isInterval ? 'default' : 'primary'}
             >
-              Iniciar
-            </Button>
-
-            <Button
-              onClick={() => setIsInterval(false)}
-              size="small"
-              color="primary"
-              disabled={!hojeFeito && isInterval ? false : true}
-            >
-              Pausar
+              {isInterval ? 'Pausar' : 'Iniciar'}
             </Button>
           </>
         )}
-        {!hojeFeito && type === 'repetition' && (
-          <Button onClick={() => handleDid()} size="small" color="primary">
+        {!hojeFeito && (
+          <Button
+            variant="contained"
+            onClick={() => handleDid()}
+            size="small"
+            color="primary"
+          >
             done
           </Button>
         )}
-        <TextField
-          id="outlined-number"
-          label="Fazer"
-          type="number"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          value={nextToDo}
-          variant="outlined"
-        />
+        {type === 'repetition' ? (
+          <TextField
+            // id="outlined-number"
+            label="Fazer"
+            type="number"
+            InputLabelProps={{
+              shrink: true,
+            }}
+            value={Math.round(nextToDo)}
+            variant="outlined"
+          />
+        ) : (
+          <TimeField value={nextToDo} />
+        )}
+
         {hojeFeito && <ThumbUp color="primary" />}
       </CardActions>
     </Card>

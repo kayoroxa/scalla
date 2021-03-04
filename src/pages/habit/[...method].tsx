@@ -14,6 +14,9 @@ import DB from 'src/utils/fetchData'
 import { useRouter } from 'next/router'
 import Layout from 'src/components/Layout'
 import { IHabits } from 'src/utils/@types/habits.interface'
+import { useHabit } from 'src/utils/useSWR'
+import { _useStoreState } from 'src/store/index.store'
+import TableJC from '../../components/TableJC'
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -37,33 +40,50 @@ const useStyles = makeStyles(theme => ({
 }))
 
 interface IProps {
-  initialData: IHabits
+  // initialData: IHabits
   method: string
-  habitIndex?: number
+  habitIndex: number
 }
 
-export default function SignIn({ initialData, method, habitIndex }: IProps) {
-  const isCreate = method === 'create'
+export default function SignIn({ method, habitIndex }: IProps) {
+  const { email } = _useStoreState(state => state)
+  if (!email) return <></>
   const router = useRouter()
+  const { data } = useHabit()
+
+  const habits: IHabits[] = data
+
+  const isCreate = method === 'create'
+  let initialData: IHabits
+
+  if (method === 'create' || !habits)
+    initialData = {
+      title: 'title',
+      type: 'timer',
+      multiplicador: 1,
+      imageUrl: '',
+      historicDays: [],
+      initialToDo: 60,
+    }
+  else initialData = habits[habitIndex]
 
   const classes = useStyles()
-  const { register, handleSubmit, control } = useForm<IHabits>()
+  const { register, handleSubmit, control, watch } = useForm<IHabits>()
+
+  const { multiplicador, initialToDo, type } = watch([
+    'multiplicador',
+    'initialToDo',
+    'type',
+  ])
+
+  // console.log(watchMultiplicador)
 
   const funcHandleSubmit = async (data: IHabits) => {
     const { title, imageUrl, initialToDo, multiplicador, type } = data
     if (isCreate) {
-      await DB.post('create', {
-        title,
-        type,
-        multiplicador: Number(multiplicador),
-        imageUrl,
-        historicDays: initialData.historicDays,
-        initialToDo: Number(initialToDo),
-      })
-    } else if (habitIndex !== undefined) {
-      await DB.post('set', {
-        index: habitIndex,
-        newData: {
+      await DB.post(
+        'create',
+        {
           title,
           type,
           multiplicador: Number(multiplicador),
@@ -71,131 +91,162 @@ export default function SignIn({ initialData, method, habitIndex }: IProps) {
           historicDays: initialData.historicDays,
           initialToDo: Number(initialToDo),
         },
-      })
+        email
+      )
+    } else if (habitIndex !== undefined) {
+      await DB.post(
+        'set',
+        {
+          index: habitIndex,
+          newData: {
+            title,
+            type,
+            multiplicador: Number(multiplicador),
+            imageUrl,
+            historicDays: initialData?.historicDays,
+            initialToDo: Number(initialToDo),
+          },
+        },
+        email
+      )
     } else throw new Error('HabitIndex Undefined')
 
     router.push('/home')
   }
 
   return (
-    <Layout>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <div className={classes.paper}>
-          <Avatar className={classes.avatar}>
-            <EmojiEmotionsIcon />
-          </Avatar>
-          <Typography component="h1" variant="h5">
-            {isCreate ? 'Create Habit' : 'Habit Config'}
-          </Typography>
-          <form
-            className={classes.form}
-            noValidate
-            onSubmit={handleSubmit(data => funcHandleSubmit(data))}
-          >
-            <TextField
-              variant="outlined"
-              margin="normal"
-              inputRef={register}
-              required
-              fullWidth
-              id="name"
-              label="name"
-              name="title"
-              defaultValue={initialData.title}
-              autoFocus
-            />
-
-            <Controller
-              variant="outlined"
-              fullWidth
-              as={
-                <Select>
-                  <MenuItem value="timer">timer</MenuItem>
-                  <MenuItem value="repetition">repetition</MenuItem>
-                </Select>
-              }
-              control={control}
-              name="type"
-              defaultValue={initialData.type}
-            />
-
-            <TextField
-              variant="outlined"
-              margin="normal"
-              inputRef={register}
-              required
-              fullWidth
-              name="imageUrl"
-              label="imageUrl"
-              id="imageUrl"
-              defaultValue={initialData.imageUrl}
-            />
-
-            <TextField
-              variant="outlined"
-              margin="normal"
-              inputRef={register}
-              required
-              type="number"
-              name="multiplicador"
-              label="multiplicador"
-              id="multiplicador"
-              defaultValue={initialData.multiplicador}
-            />
-            <TextField
-              variant="outlined"
-              margin="normal"
-              inputRef={register}
-              required
-              type="number"
-              name="initialToDo"
-              label="initialToDo"
-              id="initialToDo"
-              defaultValue={initialData.initialToDo}
-            />
-
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              color="primary"
-              className={classes.submit}
+    initialData && (
+      <Layout>
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <div className={classes.paper}>
+            <Avatar className={classes.avatar}>
+              <EmojiEmotionsIcon />
+            </Avatar>
+            <Typography component="h1" variant="h5">
+              {isCreate ? 'Create Habit' : 'Habit Config'}
+            </Typography>
+            <form
+              className={classes.form}
+              noValidate
+              onSubmit={handleSubmit(data => funcHandleSubmit(data))}
             >
-              Okay
-            </Button>
-          </form>
-        </div>
-      </Container>
-    </Layout>
+              <TextField
+                variant="outlined"
+                margin="normal"
+                inputRef={register}
+                required
+                fullWidth
+                id="name"
+                label="name"
+                name="title"
+                defaultValue={initialData.title}
+                autoFocus
+              />
+
+              <Controller
+                variant="outlined"
+                fullWidth
+                as={
+                  <Select>
+                    <MenuItem value="timer">timer</MenuItem>
+                    <MenuItem value="repetition">repetition</MenuItem>
+                  </Select>
+                }
+                control={control}
+                name="type"
+                defaultValue={initialData.type}
+              />
+
+              <TextField
+                variant="outlined"
+                margin="normal"
+                inputRef={register}
+                required
+                fullWidth
+                name="imageUrl"
+                label="imageUrl"
+                id="imageUrl"
+                defaultValue={initialData.imageUrl}
+              />
+
+              <TextField
+                variant="outlined"
+                margin="normal"
+                inputRef={register}
+                required
+                type="number"
+                name="initialToDo"
+                label={
+                  type === 'timer'
+                    ? 'tempo inicial (s)'
+                    : 'qnt repetição inicial'
+                }
+                id="initialToDo"
+                defaultValue={initialData.initialToDo}
+              />
+
+              <TextField
+                variant="outlined"
+                margin="normal"
+                inputRef={register}
+                required
+                type="number"
+                name="multiplicador"
+                label="multiplicador (%)"
+                id="multiplicador"
+                defaultValue={initialData.multiplicador}
+              />
+
+              <TableJC
+                initial={initialToDo ?? initialData.initialToDo}
+                multiplicador={multiplicador ?? initialData.multiplicador}
+                type={type ?? initialData.type}
+              />
+
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                color="primary"
+                className={classes.submit}
+              >
+                Okay
+              </Button>
+            </form>
+          </div>
+        </Container>
+      </Layout>
+    )
   )
 }
 
 export async function getServerSideProps(context: any) {
   const method = context.params.method[0]
 
-  if (method === 'create') {
-    return {
-      props: {
-        initialData: {
-          title: 'title',
-          type: 'timer',
-          multiplicador: 0.01,
-          imageUrl: '',
-          historicDays: [],
-          initialToDo: 60,
-        },
-        method,
-      },
-    }
-  }
+  //   if (method === 'create') {
+  //     return {
+  //       props: {
+  //         initialData: {
+  //           title: 'title',
+  //           type: 'timer',
+  //           multiplicador: 0.01,
+  //           imageUrl: '',
+  //           historicDays: [],
+  //           initialToDo: 60,
+  //         },
+  //         method,
+  //       },
+  //     }
+  //   }
   const habitIndex: number = Number(context.params.method[1])
-  // const habitIndex: number = Number(context.params.index)
-  const habits = await DB.get()
+  //   // // const habitIndex: number = Number(context.params.index)
+  //   // const habits = await DB.get()
+  //   // console.log(habits)
 
   return {
     props: {
-      initialData: habits[habitIndex],
+      // initialData: false,
       method,
       habitIndex,
     },
