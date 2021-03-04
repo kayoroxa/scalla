@@ -58,11 +58,12 @@ export default function TableJC({ initial, multiplicador, type }: IProps) {
 
   const getTime = (day: number) => {
     const seconds = jurosCompostos(initial, multiplicador, day)
-    const miliSegundos = new Date(Math.round(seconds) * 1000)
+    if (seconds >= 86400) return '+23:59:59'
     try {
-      return new Date(miliSegundos).toISOString().substr(11, 8)
+      const retornar = new Date(seconds * 1000).toISOString().substr(11, 8)
+      return retornar
     } catch (error) {
-      return '+23:59:59'
+      return ''
     }
   }
 
