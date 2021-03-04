@@ -60,7 +60,7 @@ export default function SignIn({ method, habitIndex }: IProps) {
     initialData = {
       title: 'title',
       type: 'timer',
-      multiplicador: 0.01,
+      multiplicador: 1,
       imageUrl: '',
       historicDays: [],
       initialToDo: 60,
@@ -101,7 +101,7 @@ export default function SignIn({ method, habitIndex }: IProps) {
           newData: {
             title,
             type,
-            multiplicador: Number(multiplicador) / 100,
+            multiplicador: Number(multiplicador),
             imageUrl,
             historicDays: initialData?.historicDays,
             initialToDo: Number(initialToDo),
@@ -179,7 +179,7 @@ export default function SignIn({ method, habitIndex }: IProps) {
                 name="multiplicador"
                 label="multiplicador (%)"
                 id="multiplicador"
-                defaultValue={initialData.multiplicador * 100}
+                defaultValue={initialData.multiplicador}
               />
               <TextField
                 variant="outlined"
@@ -208,9 +208,9 @@ export default function SignIn({ method, habitIndex }: IProps) {
               </Button>
             </form>
             <TableJC
-              initial={initialToDo}
-              multiplicador={multiplicador}
-              type={type}
+              initial={initialToDo ?? initialData.initialToDo}
+              multiplicador={multiplicador ?? initialData.multiplicador}
+              type={type ?? initialData.type}
             />
           </div>
         </Container>

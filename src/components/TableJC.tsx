@@ -54,6 +54,8 @@ interface IProps {
 export default function TableJC({ initial, multiplicador, type }: IProps) {
   const classes = useStyles()
 
+  if (initial === undefined || multiplicador === undefined) return <></>
+
   const getTime = (day: number) => {
     const seconds = jurosCompostos(initial, multiplicador, day)
     return new Date(seconds * 1000).toISOString().substr(11, 8)
