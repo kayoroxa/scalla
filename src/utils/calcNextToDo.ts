@@ -5,7 +5,7 @@ export default function calcNextTodo(
 ) {
   // const lastNumber: number = last10Days.splice(-1)[0].feito
   if (lastNumber !== null) {
-    const retornar = lastNumber + lastNumber * multiplicador
+    const retornar = lastNumber + (lastNumber * multiplicador) / 100
     return retornar
   }
   throw new Error('NextTodo não conseguiu ser calculado')

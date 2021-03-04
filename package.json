@@ -5,13 +5,15 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "now-build": "next build"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.2",
     "@material-ui/data-grid": "^4.0.0-alpha.19",
     "@material-ui/icons": "^4.11.2",
     "axios": "^0.21.1",
+    "background-timer": "mustafah/background-timer",
     "easy-peasy": "^4.0.1",
     "mongodb": "^3.6.4",
     "next": "latest",
@@ -22,6 +24,7 @@
     "react-icons": "^4.1.0",
     "react-interval": "^2.1.1",
     "react-json-view": "^1.21.1",
+    "react-number-format": "^4.4.4",
     "styled-components": "^5.0.0",
     "swr": "^0.4.2"
   },
