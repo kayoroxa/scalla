@@ -176,17 +176,6 @@ export default function SignIn({ method, habitIndex }: IProps) {
                 inputRef={register}
                 required
                 type="number"
-                name="multiplicador"
-                label="multiplicador (%)"
-                id="multiplicador"
-                defaultValue={initialData.multiplicador}
-              />
-              <TextField
-                variant="outlined"
-                margin="normal"
-                inputRef={register}
-                required
-                type="number"
                 name="initialToDo"
                 label={
                   type === 'timer'
@@ -195,6 +184,24 @@ export default function SignIn({ method, habitIndex }: IProps) {
                 }
                 id="initialToDo"
                 defaultValue={initialData.initialToDo}
+              />
+
+              <TextField
+                variant="outlined"
+                margin="normal"
+                inputRef={register}
+                required
+                type="number"
+                name="multiplicador"
+                label="multiplicador (%)"
+                id="multiplicador"
+                defaultValue={initialData.multiplicador}
+              />
+
+              <TableJC
+                initial={initialToDo ?? initialData.initialToDo}
+                multiplicador={multiplicador ?? initialData.multiplicador}
+                type={type ?? initialData.type}
               />
 
               <Button
@@ -207,11 +214,6 @@ export default function SignIn({ method, habitIndex }: IProps) {
                 Okay
               </Button>
             </form>
-            <TableJC
-              initial={initialToDo ?? initialData.initialToDo}
-              multiplicador={multiplicador ?? initialData.multiplicador}
-              type={type ?? initialData.type}
-            />
           </div>
         </Container>
       </Layout>
