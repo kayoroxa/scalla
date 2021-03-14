@@ -135,6 +135,7 @@ export default function SignIn({ method, habitIndex }: IProps) {
     setValue('initialToDo', proximoToDo)
   }
 
+  console.log(type)
   return (
     initialData && (
       <Layout>
@@ -199,7 +200,9 @@ export default function SignIn({ method, habitIndex }: IProps) {
                   type="number"
                   name="initialToDo"
                   label={
-                    type === 'timer' ? 'tempo atual (s)' : 'qnt repetição atual'
+                    initialData.type || type === 'timer'
+                      ? 'tempo atual (s)'
+                      : 'qnt repetição atual'
                   }
                   id="initialToDo"
                   defaultValue={initialData.initialToDo}
