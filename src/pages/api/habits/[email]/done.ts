@@ -14,15 +14,19 @@ export default async function habitsHandler(
         const { body } = req
         const { db }: { db: Db } = await connectToDatabase()
 
-        const path = `habits.${body.index}.historicDays`
+        const pathHistoric = `habits.${body.index}.historicDays`
+        const pathInitialToDo = `habits.${body.index}.initialToDo`
         await db.collection('user').updateOne(
           { email },
           {
             $push: {
-              [path]: {
+              [pathHistoric]: {
                 data: new Date().toLocaleDateString('pt-br'),
                 feito: body.done,
               },
+            },
+            $set: {
+              [pathInitialToDo]: body.nextToDo,
             },
           }
         )

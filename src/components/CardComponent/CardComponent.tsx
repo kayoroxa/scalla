@@ -44,15 +44,17 @@ export default function CardComponent({
   const [cacheDid, setCacheDid] = useState(false)
   // const [doToday, setDoToday] = useState(2)
 
-  const nextToDo = useMemo(() => {
-    const filtrado = historicDays.filter(value => value.feito !== 0)
-    const nextToDo =
-      filtrado.length > 0
-        ? calcNextTodo(historicDays.slice(-1)[0].feito, multiplicador)
-        : initialToDo
-    if (cacheDid) return calcNextTodo(nextToDo, multiplicador)
-    return nextToDo
-  }, [historicDays, cacheDid])
+  const [proximoToDo, setProximoToDo] = useState(initialToDo)
+
+  // const proximoToDo = useMemo(() => {
+  //   const filtrado = historicDays.filter(value => value.feito !== 0)
+  //   const proximoToDo =
+  //     filtrado.length > 0
+  //       ? calcNextTodo(historicDays.slice(-1)[0].feito, multiplicador)
+  //       : initialToDo
+  //   if (cacheDid) return calcNextTodo(proximoToDo, multiplicador)
+  //   return proximoToDo
+  // }, [historicDays, cacheDid])
 
   const [isInterval, setIsInterval] = useState(false)
   const [hojeFeito, setHojeFeito] = useState(false)
@@ -60,7 +62,9 @@ export default function CardComponent({
   const handleDid = async () => {
     // didToday({ index, didToday: nextToDo })
     // const url = process.env.NEXT_PUBLIC_URL
-    DB.post('done', { index, done: nextToDo }, email)
+    const nextToDo = calcNextTodo(proximoToDo, multiplicador)
+    setProximoToDo(nextToDo)
+    DB.post('done', { index, done: proximoToDo, nextToDo }, email)
     setCacheDid(true)
     setHojeFeito(true)
     setIsInterval(false)
@@ -78,7 +82,7 @@ export default function CardComponent({
   const router = useRouter()
   useEffect(() => {
     // !hojeFeito && setFaltantes(nextToDo)
-  }, [nextToDo])
+  }, [proximoToDo])
 
   return (
     <Card className={classes.root}>
@@ -86,7 +90,7 @@ export default function CardComponent({
         <TimerComponent
           Audio={Audio}
           isPlaying={isInterval}
-          duration={nextToDo}
+          duration={proximoToDo}
           onEnded={() => handleDid()}
         />
 
@@ -142,11 +146,11 @@ export default function CardComponent({
             InputLabelProps={{
               shrink: true,
             }}
-            value={Math.round(nextToDo)}
+            value={Math.round(proximoToDo)}
             variant="outlined"
           />
         ) : (
-          <TimeField value={nextToDo} />
+          <TimeField value={proximoToDo} />
         )}
 
         {hojeFeito && <ThumbUp color="primary" />}
