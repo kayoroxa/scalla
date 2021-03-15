@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardActions from '@material-ui/core/CardActions'
@@ -41,7 +41,7 @@ export default function CardComponent({
   if (!email) return <></>
   const classes = useStyles()
   // const { habits } = _useStoreState(state => state)
-  const [cacheDid, setCacheDid] = useState(false)
+  // const [cacheDid, setCacheDid] = useState(false)
   // const [doToday, setDoToday] = useState(2)
 
   const [proximoToDo, setProximoToDo] = useState(initialToDo)
@@ -65,7 +65,7 @@ export default function CardComponent({
     const nextToDo = calcNextTodo(proximoToDo, multiplicador)
     setProximoToDo(nextToDo)
     DB.post('done', { index, done: proximoToDo, nextToDo }, email)
-    setCacheDid(true)
+    // setCacheDid(true)
     setHojeFeito(true)
     setIsInterval(false)
   }

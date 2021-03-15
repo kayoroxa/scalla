@@ -75,7 +75,7 @@ export default function SignIn({ method, habitIndex }: IProps) {
     control,
     watch,
     setValue,
-    getValues,
+    // getValues,
   } = useForm<IHabits>()
 
   const { multiplicador, initialToDo, type } = watch([
