@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import { useForm, Controller } from 'react-hook-form'
-import { Select } from '@material-ui/core'
+import { Box, Select } from '@material-ui/core'
 import MenuItem from '@material-ui/core/MenuItem'
 import DB from 'src/utils/fetchData'
 import { useRouter } from 'next/router'
@@ -17,6 +17,7 @@ import { IHabits } from 'src/utils/@types/habits.interface'
 import { useHabit } from 'src/utils/useSWR'
 import { _useStoreState } from 'src/store/index.store'
 import TableJC from '../../components/TableJC'
+import calcNextTodo from 'src/utils/calcNextToDo'
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -34,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
-  submit: {
+  button: {
     margin: theme.spacing(3, 0, 2),
   },
 }))
@@ -68,7 +69,14 @@ export default function SignIn({ method, habitIndex }: IProps) {
   else initialData = habits[habitIndex]
 
   const classes = useStyles()
-  const { register, handleSubmit, control, watch } = useForm<IHabits>()
+  const {
+    register,
+    handleSubmit,
+    control,
+    watch,
+    setValue,
+    getValues,
+  } = useForm<IHabits>()
 
   const { multiplicador, initialToDo, type } = watch([
     'multiplicador',
@@ -114,6 +122,20 @@ export default function SignIn({ method, habitIndex }: IProps) {
     router.push('/home')
   }
 
+  const handleRecalcularButton = () => {
+    const { historicDays } = initialData
+    const filtrado = historicDays.filter(value => value.feito !== 0)
+    debugger
+    const trueMultiplicador = multiplicador ?? initialData.multiplicador
+    const proximoToDo =
+      filtrado.length > 0
+        ? calcNextTodo(historicDays.slice(-1)[0].feito, trueMultiplicador)
+        : initialData.initialToDo
+    console.log(proximoToDo)
+    setValue('initialToDo', proximoToDo)
+  }
+
+  console.log(type)
   return (
     initialData && (
       <Layout>
@@ -169,22 +191,32 @@ export default function SignIn({ method, habitIndex }: IProps) {
                 id="imageUrl"
                 defaultValue={initialData.imageUrl}
               />
+              <Box display="flex" justifyContent="space-between">
+                <TextField
+                  variant="outlined"
+                  margin="normal"
+                  inputRef={register}
+                  required
+                  type="number"
+                  name="initialToDo"
+                  label={
+                    initialData.type || type === 'timer'
+                      ? 'tempo atual (s)'
+                      : 'qnt repetição atual'
+                  }
+                  id="initialToDo"
+                  defaultValue={initialData.initialToDo}
+                />
 
-              <TextField
-                variant="outlined"
-                margin="normal"
-                inputRef={register}
-                required
-                type="number"
-                name="initialToDo"
-                label={
-                  type === 'timer'
-                    ? 'tempo inicial (s)'
-                    : 'qnt repetição inicial'
-                }
-                id="initialToDo"
-                defaultValue={initialData.initialToDo}
-              />
+                <Button
+                  variant="contained"
+                  color="default"
+                  className={classes.button}
+                  onClick={handleRecalcularButton}
+                >
+                  recalcular atual
+                </Button>
+              </Box>
 
               <TextField
                 variant="outlined"
@@ -209,7 +241,7 @@ export default function SignIn({ method, habitIndex }: IProps) {
                 fullWidth
                 variant="contained"
                 color="primary"
-                className={classes.submit}
+                className={classes.button}
               >
                 Okay
               </Button>
