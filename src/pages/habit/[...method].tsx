@@ -197,7 +197,7 @@ export default function SignIn({ method, habitIndex }: IProps) {
                   type="number"
                   name="initialToDo"
                   label={
-                    initialData.type || type === 'timer'
+                    initialData.type === 'timer' || type === 'timer'
                       ? 'tempo atual (s)'
                       : 'qnt repetição atual'
                   }
