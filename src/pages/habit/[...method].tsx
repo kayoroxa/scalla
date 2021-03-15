@@ -125,17 +125,14 @@ export default function SignIn({ method, habitIndex }: IProps) {
   const handleRecalcularButton = () => {
     const { historicDays } = initialData
     const filtrado = historicDays.filter(value => value.feito !== 0)
-    debugger
     const trueMultiplicador = multiplicador ?? initialData.multiplicador
     const proximoToDo =
       filtrado.length > 0
         ? calcNextTodo(historicDays.slice(-1)[0].feito, trueMultiplicador)
         : initialData.initialToDo
-    console.log(proximoToDo)
-    setValue('initialToDo', proximoToDo)
+    setValue('initialToDo', Math.round(proximoToDo * 100) / 100)
   }
 
-  console.log(type)
   return (
     initialData && (
       <Layout>
@@ -205,7 +202,7 @@ export default function SignIn({ method, habitIndex }: IProps) {
                       : 'qnt repetição atual'
                   }
                   id="initialToDo"
-                  defaultValue={initialData.initialToDo}
+                  defaultValue={Math.round(initialData.initialToDo * 100) / 100}
                 />
 
                 <Button
