@@ -16,9 +16,9 @@ const post = async (url: string, post: any, email: string): Promise<any> => {
   return response.data
 }
 
-const del = async (url: string, email: string, index: number): Promise<any> => {
-  // const { email } = _useStoreState(state => state)
-  const response = await axios.post(`/api/habits/${email}/${url}/${index}`)
+const del = async (url: string): Promise<any> => {
+  const { email } = _useStoreState(state => state)
+  const response = await axios.delete(`/api/habits/${email}/${url}`)
   return response.data
 }
 
