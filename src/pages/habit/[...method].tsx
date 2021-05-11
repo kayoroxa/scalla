@@ -122,6 +122,11 @@ export default function SignIn({ method, habitIndex }: IProps) {
     router.push('/home')
   }
 
+  const deleteHabit = async (habitIndex: number) => {
+    await DB.del('delete', email, habitIndex)
+    router.push('/home')
+  }
+
   const handleRecalcularButton = () => {
     const { historicDays } = initialData
     const filtrado = historicDays.filter(value => value.feito !== 0)
@@ -244,6 +249,17 @@ export default function SignIn({ method, habitIndex }: IProps) {
               </Button>
             </form>
           </div>
+          {!isCreate && (
+            <Button
+              fullWidth
+              variant="contained"
+              color="secondary"
+              // className={classes.button}
+              onClick={() => deleteHabit(habitIndex)}
+            >
+              APAGAR
+            </Button>
+          )}
         </Container>
       </Layout>
     )
