@@ -12,16 +12,19 @@ export default async function habitsHandler(
       case 'POST':
         const { email, index } = req.query
         const { db }: { db: Db } = await connectToDatabase()
-
         await db.collection('user').updateOne(
           { email },
           {
-            $pull: {
-              habits: index,
-            },
+            $unset: { [`habits.${index}`]: 1 },
           }
         )
-        res.status(200).json({ message: 'ok' })
+        await db.collection('user').updateOne(
+          { email },
+          {
+            $pull: { habits: null },
+          }
+        )
+        res.status(200).json({ message: `habito index:${index} apagado` })
         return
       default:
         res.setHeader('Allow', ['GET', 'POST'])
