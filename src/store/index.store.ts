@@ -73,7 +73,7 @@ const store = createStore<StoreModel>(
     }),
     didToday: action((state, payload) => {
       state.habits[payload.index].historicDays.push({
-        data: new Date().toLocaleDateString(),
+        data: new Date().toLocaleDateString('pt-br'),
         feito: payload.didToday,
       })
     }),

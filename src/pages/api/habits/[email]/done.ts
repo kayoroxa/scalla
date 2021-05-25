@@ -1,6 +1,7 @@
 import { Db } from 'mongodb'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { connectToDatabase } from 'src/utils/mongodb'
+import moment from 'moment'
 
 export default async function habitsHandler(
   req: NextApiRequest,
@@ -21,7 +22,7 @@ export default async function habitsHandler(
           {
             $push: {
               [pathHistoric]: {
-                data: new Date().toLocaleDateString('pt-br'),
+                data: moment().subtract(3, 'hours').format('DD/MM/YYYY'), //new Date().setHours(new Date().getHours() - 3), //.toLocaleDateString('pt-br'),
                 feito: body.done,
               },
             },
@@ -30,7 +31,11 @@ export default async function habitsHandler(
             },
           }
         )
-        res.status(200).json({ message: 'ok' })
+        res.status(200).json({
+          message: `SUCCESS ${new Date().toLocaleDateString(
+            'pt-br'
+          )} ${new Date()}`,
+        })
         return
       default:
         res.setHeader('Allow', ['GET', 'POST'])
