@@ -34,56 +34,59 @@ const imagesUrls = {
 }
 
 const store = createStore<StoreModel>(
-  persist({
-    email: null,
-    changeEmail: action((state, payload: string) => {
-      state.email = payload
-    }),
-    habits: [
-      {
-        type: 'timer',
-        title: 'Meditação',
-        imageUrl: imagesUrls.meditation,
-        historicDays: [],
-        teste: [],
-        multiplicador: 0.01,
-        initialToDo: 60,
-      },
-      {
-        type: 'repetition',
-        title: 'flexão',
-        imageUrl: imagesUrls.flexão,
-        historicDays: [],
-        multiplicador: 0.01,
-        initialToDo: 1,
-      },
-    ],
-    createHabit: action((state, payload: IHabits) => {
-      state.habits.push({
-        title: payload.title,
-        type: payload.type,
-        multiplicador: payload.multiplicador,
-        imageUrl: payload.imageUrl,
-        historicDays: payload.historicDays,
-        initialToDo: payload.initialToDo,
-      })
-    }),
-    deleteHabit: action((state, payload) => {
-      state.habits.splice(payload.index, 1)
-    }),
-    didToday: action((state, payload) => {
-      state.habits[payload.index].historicDays.push({
-        data: new Date().toLocaleDateString('pt-br'),
-        feito: payload.didToday,
-      })
-    }),
-    changeHabit: action((state, payload) => {
-      state.habits[payload.index] = {
-        ...state.habits[payload.index],
-        ...payload,
-      }
-    }),
-  })
+  persist(
+    {
+      email: null,
+      changeEmail: action((state, payload: string) => {
+        state.email = payload
+      }),
+      habits: [
+        {
+          type: 'timer',
+          title: 'Meditação',
+          imageUrl: imagesUrls.meditation,
+          historicDays: [],
+          teste: [],
+          multiplicador: 0.01,
+          initialToDo: 60,
+        },
+        {
+          type: 'repetition',
+          title: 'flexão',
+          imageUrl: imagesUrls.flexão,
+          historicDays: [],
+          multiplicador: 0.01,
+          initialToDo: 1,
+        },
+      ],
+      createHabit: action((state, payload: IHabits) => {
+        state.habits.push({
+          title: payload.title,
+          type: payload.type,
+          multiplicador: payload.multiplicador,
+          imageUrl: payload.imageUrl,
+          historicDays: payload.historicDays,
+          initialToDo: payload.initialToDo,
+        })
+      }),
+      deleteHabit: action((state, payload) => {
+        state.habits.splice(payload.index, 1)
+      }),
+      didToday: action((state, payload) => {
+        state.habits[payload.index].historicDays.push({
+          data: new Date().toLocaleDateString('pt-br'),
+          feito: payload.didToday,
+        })
+      }),
+      changeHabit: action((state, payload) => {
+        state.habits[payload.index] = {
+          ...state.habits[payload.index],
+          ...payload,
+        }
+      }),
+    },
+    { storage: 'localStorage' }
+  )
 )
 
 const typedHooks = createTypedHooks<StoreModel>()
