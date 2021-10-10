@@ -15,6 +15,7 @@ import { TextField } from '@material-ui/core'
 import TimeField from './sub-components/TimeField'
 import useStyles from './CardComponent.style'
 import TimerComponent from './sub-components/TimerComponent'
+import sequenceDate from 'src/utils/sequenceDate'
 
 interface IProps {
   imageUrl?: string
@@ -87,6 +88,7 @@ export default function CardComponent({
   return (
     <Card className={classes.root}>
       <CardActionArea onClick={() => router.push(`habit/config/${index}`)}>
+        <div>{sequenceDate}</div>
         <TimerComponent
           Audio={Audio}
           isPlaying={isInterval}
