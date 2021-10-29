@@ -84,11 +84,20 @@ export default function CardComponent({
   useEffect(() => {
     // !hojeFeito && setFaltantes(nextToDo)
   }, [proximoToDo])
-
+  // console.log(sequenceDate)
   return (
     <Card className={classes.root}>
       <CardActionArea onClick={() => router.push(`habit/config/${index}`)}>
-        <div>{sequenceDate}</div>
+        <div
+          style={{
+            position: 'absolute',
+            padding: '5px 9px',
+            background: 'gray',
+            borderRadius: '30px',
+          }}
+        >
+          {sequenceDate(historicDays)}
+        </div>
         <TimerComponent
           Audio={Audio}
           isPlaying={isInterval}

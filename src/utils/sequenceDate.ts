@@ -6,14 +6,20 @@ interface IHistoryData {
 export default function (historyData: IHistoryData[]) {
   const onlyData = historyData.map(item => item.data)
   const onlyDataSorted = onlyData.reverse()
+  const hoje = new Date().toLocaleDateString('pt-br')
+  const diferenceToDay = dateStringDiference(onlyDataSorted[0], hoje)
+  if (diferenceToDay > 2) return 0 //sem sequencia
   let stop = false
   const sequenceDay = onlyDataSorted.reduce((acc, curr, i) => {
     if (i === 0) return 0
     if (stop === true) return acc
 
     const diference = dateStringDiference(curr, onlyDataSorted[i - 1])
-    if (diference === 1) return acc + 1
-    if (diference > 1) {
+    if (diference === 1 || diference === 2) {
+      const isLastData = i === onlyDataSorted.length - 1
+      return isLastData ? acc + 2 : acc + 1
+    }
+    if (diference > 2) {
       stop = true
       return acc === 0 ? acc : acc + 1
     }
