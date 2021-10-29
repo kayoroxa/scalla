@@ -15,6 +15,7 @@ import { TextField } from '@material-ui/core'
 import TimeField from './sub-components/TimeField'
 import useStyles from './CardComponent.style'
 import TimerComponent from './sub-components/TimerComponent'
+import sequenceDate from 'src/utils/sequenceDate'
 
 interface IProps {
   imageUrl?: string
@@ -83,10 +84,20 @@ export default function CardComponent({
   useEffect(() => {
     // !hojeFeito && setFaltantes(nextToDo)
   }, [proximoToDo])
-
+  // console.log(sequenceDate)
   return (
     <Card className={classes.root}>
       <CardActionArea onClick={() => router.push(`habit/config/${index}`)}>
+        <div
+          style={{
+            position: 'absolute',
+            padding: '5px 9px',
+            background: 'gray',
+            borderRadius: '30px',
+          }}
+        >
+          {sequenceDate(historicDays)}
+        </div>
         <TimerComponent
           Audio={Audio}
           isPlaying={isInterval}
