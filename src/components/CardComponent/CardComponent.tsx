@@ -15,7 +15,7 @@ import { TextField } from '@material-ui/core'
 import TimeField from './sub-components/TimeField'
 import useStyles from './CardComponent.style'
 import TimerComponent from './sub-components/TimerComponent'
-import sequenceDate from 'src/utils/sequenceDate'
+import sequenceDate, { dateStringDiference } from 'src/utils/sequenceDate'
 
 interface IProps {
   imageUrl?: string
@@ -92,8 +92,14 @@ export default function CardComponent({
           style={{
             position: 'absolute',
             padding: '5px 9px',
-            background: 'gray',
             borderRadius: '30px',
+            background:
+              dateStringDiference(
+                historicDays.slice(-1)[0]?.data,
+                new Date().toLocaleDateString('pt-br')
+              ) === 2
+                ? 'red'
+                : 'gray',
           }}
         >
           {sequenceDate(historicDays)}

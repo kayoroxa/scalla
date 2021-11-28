@@ -30,7 +30,7 @@ export default function (historyData: IHistoryData[]) {
   return sequenceDay
 }
 
-function dateStringDiference(date1: any, date2: any) {
+export function dateStringDiference(date1: any, date2: any) {
   const [day1, month1, year1] = date1.split('/')
   const [day2, month2, year2] = date2.split('/')
   const date1Date = new Date(year1, month1 - 1, day1)
