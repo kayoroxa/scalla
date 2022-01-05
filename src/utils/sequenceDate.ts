@@ -19,11 +19,11 @@ export default function (historyData: IHistoryData[]) {
 
     const isLastDate = i === onlyDataSorted.length - 1
 
-    if (diference === 0 && isLastDate) {
+    if (diference <= 2 && isLastDate && acc === 0) {
       return acc + 1
     }
     if (diference === 1 || diference === 2) {
-      return isLastDate ? acc + 2 : acc + 1
+      return acc + 1
     }
     if (diference > 2) {
       stop = true
